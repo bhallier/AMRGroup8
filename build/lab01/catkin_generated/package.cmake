@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "lab01")
+set(lab01_MAINTAINER "turtlebot <turtlebot@todo.todo>")
+set(lab01_DEPRECATED "")
+set(lab01_VERSION "0.0.0")
+set(lab01_BUILD_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "kobuki_msgs")
+set(lab01_RUN_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "kobuki_msgs")
+set(lab01_BUILDTOOL_DEPENDS "catkin")

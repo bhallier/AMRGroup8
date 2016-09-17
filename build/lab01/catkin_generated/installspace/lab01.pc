@@ -1,0 +1,8 @@
+prefix=/home/turtlebot/catkin_ws/install
+
+Name: lab01
+Description: Description of lab01
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/turtlebot/catkin_ws/install/lib 
+Requires: 

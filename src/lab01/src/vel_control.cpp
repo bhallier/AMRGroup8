@@ -1,0 +1,160 @@
+#include "ros/ros.h"
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/Twist.h>
+#include <kobuki_msgs/BumperEvent.h>
+#include <std_msgs/Empty.h>
+#include <math.h>
+#include <string.h>
+
+#define DEBUG 0
+#define freq 10.0
+#define dt 1/freq
+
+// Target velocities
+float target_lin = 0.0;  //default to 0.0 in m/s
+float target_ang = 0.0;  //default to 0.0 in rad/s
+
+// Odom position data
+float new_pos;
+float new_ang;
+
+//PID data
+float error_lin = 0;
+float past_error_lin = 0;
+float P_val_lin = 0;
+float I_val_lin = 0;
+float D_val_lin = 0;
+float robot_vel_lin = 0;
+
+float error_ang = 0;
+float past_error_ang = 0;
+float P_val_ang = 0;
+float I_val_ang = 0;
+float D_val_ang = 0;
+float robot_vel_ang = 0;
+
+struct PID_data { 
+  float past_error;
+  float integral;
+  float kp;
+  float ki;
+  float kd;
+  float target;
+
+} data;
+
+PID_data linear;
+PID_data angular;
+PID_data *lin_ptr = &linear;
+PID_data *ang_ptr = &angular;
+                                                                      /* -----  Callback functions ----- */
+void cmd_callback(const geometry_msgs::Twist::ConstPtr& data)
+/*
+   Called every time a new Command msg is published 
+*/
+{
+   #if DEBUG
+        ROS_INFO("New target velocity");
+   #endif
+
+   lin_ptr->target = data->linear.x;
+   ang_ptr->target = data->angular.z;
+}
+
+void odom_callback(const nav_msgs::Odometry::ConstPtr& data)
+/*
+   Called every time a new Odometry msg is published 
+*/
+{
+   new_pos = data->pose.pose.position.x;
+   new_ang = data->pose.pose.orientation.z;
+}
+
+                                                                           /* ----- Functions ----- */
+double calc_vel(float pos, float prev_pos, float time_step)
+/*
+   Calculates new velocity in seconds unit
+   --- Time steps based off of header in callbacks
+*/
+{
+   return (pos - prev_pos) / time_step;
+}
+
+void init_PID(struct PID_data *PID_structure, float k_p, float k_i, float k_d, float target)
+{
+   PID_structure->kp = k_p;
+   PID_structure->ki = k_i;
+   PID_structure->kd = k_d;
+   PID_structure->past_error = 0.0;
+   PID_structure->integral = 0.0;
+   PID_structure->target = target;
+}
+
+float PID_calc(struct PID_data *PID_structure, float current, float time)
+/*
+   Calculates new velocity
+*/
+{
+   float error = PID_structure->target - current;
+   PID_structure->integral += error * time;
+   float derivative = (error - PID_structure->past_error) / time;
+   PID_structure->past_error = error;
+
+   return PID_structure->kp * error + PID_structure->ki * PID_structure->integral + PID_structure->kd * derivative;
+}
+
+                                                                         /* ----- MAIN Function ----- */
+int main(int argc, char **argv)
+{
+   ROS_INFO("Initializing Velocity Controller...");
+
+   ros::init(argc, argv, "PID_node");
+   ros::NodeHandle nh;
+   ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel_mux/input/navi", 1, true);
+   ros::Publisher reset_pub = nh.advertise<std_msgs::Empty>("/mobile_base/commands/reset_odometry", 1, true);
+   ros::Subscriber odom_sub = nh.subscribe("/odom", 10, odom_callback);
+   ros::Subscriber vel_target = nh.subscribe("vel_controller/target_vel", 10, cmd_callback);
+   ros::Rate loop_rate = freq;  
+
+   float kp_lin, ki_lin, kd_lin, kp_ang, ki_ang, kd_ang;
+
+   ros::param::get("~kp_lin", kp_lin); 
+   ros::param::get("~ki_lin", ki_lin); 
+   ros::param::get("~kd_lin", kd_lin);
+   ros::param::get("~kp_ang", kp_ang); 
+   ros::param::get("~ki_ang", ki_ang); 
+   ros::param::get("~kd_ang", kd_ang);
+
+   init_PID(lin_ptr, kp_lin, ki_lin, kd_lin, target_lin);
+   init_PID(ang_ptr, kp_ang, ki_ang, kd_ang, target_ang);
+
+   geometry_msgs::Twist new_vel_msg;
+   float robot_vel_lin, past_pos, robot_vel_ang, past_ang;
+   past_pos = 0.0;
+   past_ang = 0.0;
+
+   std_msgs::Empty reset_msg;
+   reset_pub.publish(reset_msg);
+
+   ROS_INFO("Velocity Controller Initialized!");
+   ROS_INFO("Starting Loop...");
+
+   while(ros::ok()) {
+      ros::spinOnce();
+      robot_vel_lin = calc_vel(new_pos, past_pos, dt);
+      robot_vel_ang = calc_vel(new_ang, past_ang, dt);
+      
+      //ROS_INFO_STREAM(robot_vel_lin);
+
+      new_vel_msg.linear.x = PID_calc(lin_ptr, robot_vel_lin, dt);
+      new_vel_msg.angular.z = PID_calc(ang_ptr, robot_vel_ang, dt);
+
+      vel_pub.publish(new_vel_msg);
+      past_pos = new_pos;
+      past_ang = new_ang;
+
+      loop_rate.sleep();
+   }
+   return 0;
+}
+
