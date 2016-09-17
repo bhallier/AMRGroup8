@@ -66,5 +66,6 @@ lab01/CMakeFiles/goal_controller_node.dir/src/target_goal.cpp.o: /opt/ros/indigo
 lab01/CMakeFiles/goal_controller_node.dir/src/target_goal.cpp.o: /opt/ros/indigo/include/ros/wall_timer.h
 lab01/CMakeFiles/goal_controller_node.dir/src/target_goal.cpp.o: /opt/ros/indigo/include/ros/wall_timer_options.h
 lab01/CMakeFiles/goal_controller_node.dir/src/target_goal.cpp.o: /opt/ros/indigo/include/rosconsole/macros_generated.h
+lab01/CMakeFiles/goal_controller_node.dir/src/target_goal.cpp.o: /opt/ros/indigo/include/std_msgs/Empty.h
 lab01/CMakeFiles/goal_controller_node.dir/src/target_goal.cpp.o: /opt/ros/indigo/include/std_msgs/Header.h
 
