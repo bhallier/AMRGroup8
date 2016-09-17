@@ -15,6 +15,8 @@ nav_msgs/Odometry.h
 -
 std_msgs/Empty.h
 -
+std_msgs/Bool.h
+-
 math.h
 -
 
@@ -803,6 +805,22 @@ ros/forwards.h
 /opt/ros/indigo/include/ros/ros/forwards.h
 
 /opt/ros/indigo/include/rosconsole/macros_generated.h
+
+/opt/ros/indigo/include/std_msgs/Bool.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
 
 /opt/ros/indigo/include/std_msgs/Empty.h
 string

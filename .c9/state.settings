@@ -1,4 +1,17 @@
 {
+    "breakpoints": {
+        "json()": [
+            {
+                "path": "/src/lab01/src/target_goal.cpp",
+                "line": 10,
+                "column": 0,
+                "text": "target_goal.cpp",
+                "content": "#define dt 1/freq",
+                "time": 1474147328620,
+                "enabled": true
+            }
+        ]
+    },
     "console": {
         "@expanded": true,
         "@height": 236,
@@ -6,8 +19,8 @@
         "json()": {
             "meta": {
                 "accessList": [
-                    "tab3",
-                    "tab0"
+                    "tab0",
+                    "tab3"
                 ]
             },
             "name": "pane1",
@@ -17,7 +30,8 @@
                     "name": "tab0",
                     "path": "",
                     "className": [
-                        "tab0"
+                        "tab0",
+                        "focus"
                     ],
                     "document": {
                         "changed": false,
@@ -30,20 +44,19 @@
                         "terminal": {
                             "id": "devel_441",
                             "cwd": "",
-                            "width": 1029,
+                            "width": 1583,
                             "height": 210
                         }
                     },
                     "editorType": "terminal",
-                    "active": false
+                    "active": true
                 },
                 {
                     "type": "tab",
                     "name": "tab3",
                     "path": "",
                     "className": [
-                        "tab3",
-                        "focus"
+                        "tab3"
                     ],
                     "document": {
                         "changed": false,
@@ -56,12 +69,12 @@
                         "terminal": {
                             "id": "devel_871",
                             "cwd": "",
-                            "width": 1029,
+                            "width": 1583,
                             "height": 210
                         }
                     },
                     "editorType": "terminal",
-                    "active": true
+                    "active": false
                 }
             ],
             "skin": "editor_tab",
@@ -82,18 +95,20 @@
     },
     "ext": {
         "counters": {
-            "@ace": 2,
+            "@ace": 1,
             "@acestatus": 1,
+            "@datagrid": 1,
             "@divider": 5,
-            "@document": 4,
+            "@document": 7,
             "@form": 5,
             "@immediate": 1,
             "@menu": 5,
             "@menuitem": 13,
             "@pane": 2,
-            "@session": 4,
-            "@tab": 4,
-            "@undoManager": 4
+            "@preferences": 1,
+            "@session": 7,
+            "@tab": 7,
+            "@undoManager": 7
         }
     },
     "findinfiles": {
@@ -111,8 +126,8 @@
     },
     "panecycle": {
         "json()": [
-            "tab3",
-            "tab2"
+            "tab0",
+            "tab1"
         ]
     },
     "panels": {
@@ -147,37 +162,44 @@
         "expanded": {
             "json()": [
                 "/",
-                "/src/lab01",
-                "/src/lab01/src",
-                "/src"
+                "/src/lab01/src"
             ]
+        }
+    },
+    "recentfiles": {
+        "json()": []
+    },
+    "run": {
+        "process": {
+            "json()": ""
         }
     },
     "tabs": {
         "json()": {
-            "focus": "tab3",
+            "focus": "/src/lab01/src/target_goal.cpp",
             "meta": {
                 "accessList": [
-                    "tab2"
+                    "tab1"
                 ]
             },
             "name": "pane0",
             "nodes": [
                 {
                     "type": "tab",
-                    "name": "tab2",
-                    "path": "/src/lab01/src/vel_control.cpp",
+                    "name": "tab1",
+                    "path": "/src/lab01/src/target_goal.cpp",
                     "className": [
-                        "tab2"
+                        "tab1",
+                        "focus"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1474143436478
+                            "timestamp": 1474147500144
                         },
                         "filter": true,
-                        "title": "vel_control.cpp",
-                        "tooltip": "/src/lab01/src/vel_control.cpp",
+                        "title": "target_goal.cpp",
+                        "tooltip": "/src/lab01/src/target_goal.cpp",
                         "ace": {}
                     },
                     "editorType": "ace",
@@ -191,7 +213,7 @@
     },
     "tree_selection": {
         "json()": [
-            "/src/lab01/src/vel_control.cpp"
+            "/"
         ]
     }
 }

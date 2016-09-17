@@ -2,6 +2,7 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/Empty.h>
+#include <std_msgs/Bool.h>
 #include <math.h>
 
 #define DEBUG 0
@@ -49,6 +50,8 @@ int main(int argc, char** argv)
    ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel_mux/input/navi", 1, true);
    #endif
    ros::Publisher reset_pub = nh.advertise<std_msgs::Empty>("/mobile_base/commands/reset_odometry", 1 , true);
+   ros::Publisher goal_feedback_pub = nh.advertise<std_msgs::Bool>("/goal_controller/feedback", 1, true);
+   
    ros::Subscriber odom_sub = nh.subscribe("/odom", 10, odom_callback);
    ros::Subscriber goal_sub = nh.subscribe("/goal_controller/target_goal", 10, goal_callback);
    ros::Rate loop_rate = freq;
@@ -80,8 +83,12 @@ int main(int argc, char** argv)
       }
       vel_pub.publish(new_vel);
 
-      if(distance < goal_range) {
+      if(distance < goal_range && !goal_margin) {
          goal_margin = true;
+         ROS_INFO("Goal Reached!");
+         std_msgs::Bool feedback;
+         feedback.data = true;
+         goal_feedback_pub.publish(feedback);
       }
       
       #if DEBUG

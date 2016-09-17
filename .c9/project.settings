@@ -8,7 +8,7 @@
     "build": {
         "@builder": "auto",
         "@path": "/.c9/builders",
-        "@saveall": "true"
+        "@saveall": true
     },
     "find.nak": {
         "@searchLimit": 100
@@ -49,7 +49,24 @@
         "@path": "/.c9/runners",
         "configs": {
             "@inited": "true",
-            "json()": {}
+            "json()": {
+                "catkin_make": {
+                    "command": "catkin_make",
+                    "cwd": "/",
+                    "env": {},
+                    "name": "catkin_make",
+                    "runner": "Shell command",
+                    "toolbar": true
+                },
+                "minimal.launch": {
+                    "command": "roslaunch turtlebot_bringup minimal.launch",
+                    "cwd": "/",
+                    "env": {},
+                    "name": "minimal.launch",
+                    "runner": "Shell command",
+                    "toolbar": true
+                }
+            }
         }
     }
 }
